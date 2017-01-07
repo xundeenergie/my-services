@@ -1,0 +1,18 @@
+[Unit]
+Description=Packet Filtering Framework %i
+DefaultDependencies=no
+#Wants=iptables.service
+Wants=iptables-download@%i.service
+After=systemd-sysctl.service iptables-download@%i.service
+OnFailure=status-email-root@%n.service
+
+[Service]
+Type=oneshot
+#Type=simple
+ExecStart=/sbin/iptables -A INPUT -p tcp -m set --match-set %I src -j DROP
+#ExecReload=/sbin/iptables -D INPUT -p tcp -m set --match-set %I src -j DROP
+ExecStop=/sbin/iptables -D INPUT -p tcp -m set --match-set %I src -j DROP
+RemainAfterExit=yes
+
+[Install]
+WantedBy=timer-weekly.target

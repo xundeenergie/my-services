@@ -1,0 +1,10 @@
+[Unit]
+Description=Download china-ip-addresses to block with iptables in iplist %i
+OnFailure=status-email-root@%n.service
+Before=iptables.service
+Wants=iptables.service
+
+[Service]
+Type=simple
+WorkingDirectory=/etc/
+ExecStart=/etc/systemd/system/scripts/update-blacklist.sh

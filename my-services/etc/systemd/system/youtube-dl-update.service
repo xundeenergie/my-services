@@ -1,0 +1,10 @@
+[Unit]
+Description=Update youtube-dl direct from upstream
+
+[Service]
+ExecStartPre=/etc/NetworkManager/mkupdate.py -G -c
+#ExecStartPre=/bin/sh -c "(/bin/systemctl is-active -q update.target)"
+ExecStart=/usr/local/bin/youtube-dl -U
+
+[Install]
+WantedBy=timer-daily.target

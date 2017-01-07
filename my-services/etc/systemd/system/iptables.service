@@ -1,0 +1,16 @@
+[Unit]
+Description=Packet Filtering Framework
+DefaultDependencies=no
+After=systemd-sysctl.service
+#ReloadPropagatedFrom=ipzone
+#Before=sysinit.target
+
+[Service]
+#Type=oneshot
+ExecStart=/sbin/iptables-restore /etc/iptables.firewall.rules
+ExecReload=/sbin/iptables-restore /etc/iptables.firewall.rules
+ExecStop=/sbin/iptables -F
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

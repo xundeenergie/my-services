@@ -1,0 +1,11 @@
+Package: my-services
+Version: 0.1.4
+Section: misc
+Priority: extra
+Architecture: all
+Maintainer: Jakobus Schürz <xundeenergie@gmail.com>
+Homepage: http://github.com/xundeenergie/my-config
+Provides: my-services
+Depends: ipset, youtube-dl, systemd, curl, wget
+Description: My configurations 
+ Special configurations for this and that around in linux, for jakob schürz

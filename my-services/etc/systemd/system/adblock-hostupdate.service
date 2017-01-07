@@ -1,0 +1,19 @@
+[Unit]
+Description=Download adblock-hostlist and update /etc/hosts
+After=network-online.target
+OnFailure=status-email-root@%n.service
+ConditionPathExists=/etc/hosts.d
+
+[Service]
+#ExecStartPre=-/bin/mkdir /etc/hosts.d
+ExecStartPre=/etc/NetworkManager/mkupdate.py -G -c
+ExecStartPre=/bin/sh -c "/bin/systemctl is-active -q network-online.target"
+#ExecStartPre=/bin/sh -c "(/bin/systemctl is-active -q update.target)"
+ExecStartPre=/bin/ping -q -c 1 "winhelp2002.mvps.org"
+ExecStartPre=/usr/bin/wget http://winhelp2002.mvps.org/hosts.txt -O /etc/hosts.d/hosts.winhelp2002.list
+ExecStartPre=/bin/sh -c "/etc/systemd/system/scripts/hostupdate.sh|tee  /tmp/update_hosts_except"
+ExecStartPre=/bin/sed -i -f /tmp/update_hosts_except /etc/hosts.d/hosts.winhelp2002.list
+ExecStart=/bin/sh -c "/bin/cat /etc/hosts.d/*.list | sed -e 's/\r//g' > /etc/hosts"
+
+[Install]
+WantedBy=timer-weekly.target
