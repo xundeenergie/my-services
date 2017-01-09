@@ -2,8 +2,7 @@
 Description=Update youtube-dl direct from upstream
 
 [Service]
-ExecStartPre=/etc/NetworkManager/mkupdate.py -G -c
-#ExecStartPre=/bin/sh -c "(/bin/systemctl is-active -q update.target)"
+ExecStartPre=/usr/bin/nm-updatecheck.py -G -c
 ExecStart=/usr/local/bin/youtube-dl -U
 
 [Install]

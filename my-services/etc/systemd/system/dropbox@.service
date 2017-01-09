@@ -1,0 +1,17 @@
+[Unit]
+Description=dropbox for user %I
+After=network-online.target
+PartOf=network-online.target
+OnFailure=status-email-root@%n.service
+
+[Service]
+Type=forking
+User=%I
+ExecStartPre=/usr/bin/nm-updatecheck.py -G -c
+ExecStart=/usr/bin/dropbox start 
+ExecStop=/usr/bin/dropbox stop
+Restart=always
+
+[Install]
+WantedBy=network-online.target
+#WantedBy=multi-user.target
