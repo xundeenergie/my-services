@@ -7,7 +7,7 @@ OnFailure=status-email-root@%n.service
 [Service]
 Type=forking
 User=%I
-ExecStartPre=/bin/sh -c (/bin/systemctl is-active update.target)
+ExecStartPre=/bin/sh -c "(/bin/systemctl is-active update.target)"
 #ExecStartPre=/usr/bin/nm-updatecheck.py -G -c
 ExecStart=/usr/bin/dropbox start 
 ExecStop=/usr/bin/dropbox stop
