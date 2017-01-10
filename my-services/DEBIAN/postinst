@@ -24,12 +24,12 @@ case "$1" in
 
   configure)
     # restart systemd-user for all users to reread the printer-configuration
-    echo "postinstall-script for my-config"
+    echo "postinstall-script for my-services"
     DIRS="/etc/hosts.d /etc/ipset-blacklist"
     for d in $DIRS; do 
 	    [ -d "$d" ] || /bin/mkdir "$d"
     done
-    loginctl --no-legend -o cat|while read c i u s; do
+    loginctl --no-legend -o cat|awk '{print $2,$3}'|sort|uniq|while read i u ; do
     	echo "restart user-systemd for $u $i"
 	/bin/systemctl is-active "user@${i}.service" >/dev/null && /bin/systemctl restart "user@${i}.service"
     	#systemctl |grep "user@{$i}.service"  && echo systemctl restart "user@{$i}.service"
