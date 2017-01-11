@@ -1,0 +1,23 @@
+[Unit]
+Description=Update rkhunter-database every week
+ConditionACPower=true
+ConditionFileIsExecutable=|/usr/bin/wget
+ConditionFileIsExecutable=|/usr/bin/curl
+ConditionFileIsExecutable=|/usr/bin/links
+ConditionFileIsExecutable=|/usr/bin/elinks
+ConditionFileIsExecutable=|/usr/bin/lynx
+OnFailure=status-email-root@%n.service
+
+[Service]
+User=root
+IOSchedulingClass=2
+IOSchedulingPriority=5
+Nice=0
+ExecStartPre=/usr/bin/nm-updatecheck.py -G -c
+#ExecStartPre=/bin/sh -c "(/bin/systemctl is-active -q update.target)"
+ExecStartPre=/usr/bin/rkhunter --versioncheck --nocolors --appendlog
+ExecStart=/usr/bin/rkhunter --update --nocolors --appendlog
+
+[Install]
+WantedBy=timer-weekly.target
+

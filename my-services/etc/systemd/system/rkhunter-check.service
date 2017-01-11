@@ -1,0 +1,15 @@
+[Unit]
+Description=Run rkhunter every day
+ConditionACPower=true
+OnFailure=status-email-root@%n.service
+
+[Service]
+User=root
+IOSchedulingClass=2
+IOSchedulingPriority=5
+Nice=0
+ExecStart=-/usr/bin/rkhunter --cronjob --report-warnings-only --appendlog
+
+[Install]
+WantedBy=timer-daily.target
+
