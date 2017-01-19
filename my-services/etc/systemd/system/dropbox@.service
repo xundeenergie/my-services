@@ -1,7 +1,7 @@
 [Unit]
 Description=dropbox for user %I
 After=network-online.target
-PartOf=network-online.target
+#PartOf=network-online.target
 OnFailure=status-email-root@%n.service
 
 [Service]
