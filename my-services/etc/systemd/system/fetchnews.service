@@ -1,0 +1,8 @@
+[Unit]
+Description=Fetch news for leafnode
+
+[Service]
+#ExecStartPre=/usr/bin/nm-online -x
+ExecStart=/usr/sbin/fetchnews
+
+

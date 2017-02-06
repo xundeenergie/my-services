@@ -1,0 +1,13 @@
+[Unit]
+Description=Run fetchnews every 10 minutes
+DefaultDependencies=false
+PartOf=network-online.target
+After=network-online.target
+
+[Timer]
+OnCalendar=*:0/15
+AccuracySec=5min
+#Persistent=true
+
+[Install]
+WantedBy=network-online.target

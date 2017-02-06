@@ -1,0 +1,25 @@
+[Unit]
+Description=fetchmail for User %i
+#DefaultDependencies=false
+#PartOf=network-online.target
+PartOf=fetchmail.target
+#After=network-online.target dovecot.service exim4.service multi-user.target
+#After=multi-user.target
+#After=local-fs.target
+#After=systemd-user-sessions.service network-online.target
+#After=network-online.target
+OnFailure=status-email-root@%n.service
+
+ConditionFileNotEmpty=/home/%i/.fetchmailrc
+
+[Service]
+Type=simple
+User=%i
+Environment=FETCHMAILUSER=%i
+#ExecStartPre=/usr/bin/nm-online --timeout 30
+ExecStart=-/usr/bin/fetchmail --nodetach
+Restart=always
+
+[Install]
+#WantedBy=network-online.target
+WantedBy=fetchmail.target
