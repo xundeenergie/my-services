@@ -2,8 +2,10 @@
 Description=Packet Filtering Framework %i
 DefaultDependencies=no
 #Wants=iptables.service
-Wants=iptables-download@%i.service
+Wants=iptables-download@%i.service iptables.service
 After=systemd-sysctl.service iptables-download@%i.service
+Before=iptables.service
+BindsTo=iptables.service
 OnFailure=status-email-root@%n.service
 
 [Service]

@@ -1,0 +1,19 @@
+[Unit]
+Description=Create and delete $HOME for Guest-Session USER: %i
+Before=user@%i.service
+#BindsTo=user@%i.service guest-session@%i.service
+Conflicts=shutdown.target
+BindsTo=user@%i.service
+#RefuseManualStart=true
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+Environment="SOURCE='/etc/skel-gast'"
+ExecStartPre=/bin/sh -c '/bin/systemctl set-environment UHOME=$(getent passwd %i | cut -d: -f6)'
+ExecStartPre=/etc/systemd/system/scripts/guest-session-homedir.sh create /etc/skel-gast "$UHOME"
+ExecStart=/bin/chown -R %i:%i "$UHOME"
+ExecStop=-/etc/systemd/system/scripts/guest-session-homedir.sh delete "$UHOME"
+
+[Install]
+WantedBy=user@%i.service
