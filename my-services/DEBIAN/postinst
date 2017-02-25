@@ -27,7 +27,7 @@ set -e
 
 # For user-services only, for earch target an extra section! for system-services user deb-systemd*
 # put in full unit-name. for example "mkbackup@hourly.service"
-SERVICES=""
+SERVICES="mpd.socket pulseaudio.socket mpDris2.service"
 case "$1" in
 
     configure)

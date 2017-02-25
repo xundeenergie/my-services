@@ -11,7 +11,7 @@ fi
 
 # For user-services only, for earch target an extra section! for system-services user deb-systemd*
 # put in full unit-name. for example "mkbackup@hourly.service"
-SERVICES=""
+SERVICES="mpd.socket pulseaudio.socket mpDris2.service"
 
 [ -e /etc/systemd/user/default.target.wants/ ] || mkdir -p /etc/systemd/user/default.target.wants/
 case "$1" in
