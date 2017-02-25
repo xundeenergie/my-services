@@ -2,82 +2,79 @@
 
 set -e
 
-# Automatically added by dh_installdeb
-dpkg-maintscript-helper mv_conffile /etc/pam.d/cups-daemon /etc/pam.d/cups 1.7.3-2~ -- "$@"
-# End automatically added section
-# Automatically added by dh_installdeb
-dpkg-maintscript-helper rm_conffile /etc/default/cups 1.7.1-6~ -- "$@"
-# End automatically added section
-# Automatically added by dh_installdeb
-dpkg-maintscript-helper rm_conffile /etc/cups/cupsd.conf.default 1.7.1-3~ -- "$@"
-# End automatically added section
-# Automatically added by dh_installinit
-if [ "$1" = "purge" ] ; then
-	update-rc.d cups remove >/dev/null
-fi
-
-
 # In case this system is running systemd, we make systemd reload the unit files
 # to pick up changes.
 if [ -d /run/systemd/system ] ; then
 	systemctl --system daemon-reload >/dev/null || true
 fi
-# End automatically added section
-# Automatically added by dh_systemd_enable
-if [ "$1" = "remove" ]; then
-	if [ -x "/usr/bin/deb-systemd-helper" ]; then
-		deb-systemd-helper mask cups.path cups.service cups.socket >/dev/null
-	fi
-fi
-
-if [ "$1" = "purge" ]; then
-	if [ -x "/usr/bin/deb-systemd-helper" ]; then
-		deb-systemd-helper purge cups.path cups.service cups.socket >/dev/null
-		deb-systemd-helper unmask cups.path cups.service cups.socket >/dev/null
-	fi
-fi
-# End automatically added section
-# Automatically added by dh_apparmor
-if [ "$1" = "purge" ] && ! [ -e "/etc/apparmor.d/usr.sbin.cupsd" ] ; then
-    rm -f "/etc/apparmor.d/disable/usr.sbin.cupsd" || true
-    rm -f "/etc/apparmor.d/force-complain/usr.sbin.cupsd" || true
-    rm -f "/etc/apparmor.d/local/usr.sbin.cupsd" || true
-    rmdir /etc/apparmor.d/disable 2>/dev/null || true
-    rmdir /etc/apparmor.d/local   2>/dev/null || true
-    rmdir /etc/apparmor.d         2>/dev/null || true
-fi
-# End automatically added section
 
 
+# For user-services only, for earch target an extra section! for system-services user deb-systemd*
+# put in full unit-name. for example "mkbackup@hourly.service"
+SERVICES=""
+
+[ -e /etc/systemd/user/default.target.wants/ ] || mkdir -p /etc/systemd/user/default.target.wants/
 case "$1" in
     purge)
-	rm -rf /var/lib/cups
-	rm -rf /var/log/cups
-	rm -rf /var/run/cups
-	rm -rf /var/cache/cups
-	rm -rf /var/spool/cups
-	rm -f /etc/cups/ssl/server.crt
-	rm -f /etc/cups/ssl/server.key
-	rm -rf /etc/cups/ssl
-	rm -rf /etc/cups/passwd.md5
-	rm -rf /etc/cups/cups.d
-	rm -f /etc/cups/cupsd.conf
-	rm -f /etc/cups/cupsd-systemd-listen.conf
-	rm -f /etc/cups/cupsd.conf.pre16-bak
-	rm -f /etc/cups/printers.conf* /etc/cups/classes.conf*
-	rmdir /etc/cups 2>/dev/null || true
+        for SERVICE in $SERVICES; do
+            UNIT_NAME=$(echo $SERVICE|sed -e 's/\@.*\.\([a-z][a-z]*\)$/@.\1/')
+            for TARGET in $(gawk -F "=" '\
+                    $1 ~ /WantedBy/ {split($2,wants," ")} \
+                    $1 ~ /RequiredBy/ {split($2,requ," ")} \
+                    END{for (w in wants){print wants[w]".wants"};for (r in requ){print requ[r]".requires"}}' "/usr/lib/systemd/user/${UNIT_NAME}");do
+                [ -e "/etc/systemd/user/${SERVICE}" ] || rf -rf "/etc/systemd/user/${SERVICE}"
+                [ -e "/etc/systemd/user/${TARGET}/${SERVICE}" ] || rm -rf "/etc/systemd/user/${TARGET}/${SERVICE}"
+            done
+        done
+	#rm -rf /etc/systemd/user/cups-fuse.service
+        #rm -rf /etc/systemd/user/default.target.wants/cups-fuse.service
 	;;
-    abort-upgrade)
-        if [ -e /etc/cups/cupsd.conf.conffile-bak ]; then
-            # Move cupsd.conf back
-            mv /etc/cups/cupsd.conf.conffile-bak /etc/cups/cupsd.conf
-        fi
+    abort-upgrade|upgrade)
         ;;
-    remove|upgrade|failed-upgrade|abort-install|disappear)
+    failed-upgrade|abort-install|disappear)
+        ;;
+    remove)
+        for SERVICE in $SERVICES; do
+            for TARGET in $(gawk -F "=" '\
+                    $1 ~ /WantedBy/ {split($2,wants," ")} \
+                    $1 ~ /RequiredBy/ {split($2,requ," ")} \
+                    END{for (w in wants){print wants[w]".wants"};for (r in requ){print requ[r]".requires"}}' "/usr/lib/systemd/user/${UNIT_NAME}");do
+                [ -e "/etc/systemd/user/${TARGET}" ] || mkdir -p "/etc/systemd/user/${TARGET}"
+                ln -sf "/dev/null" "/etc/systemd/user/${TARGET}/${SERVICE}"
+            done
+        done
         ;;
 
     *)
         echo "postrm called with unknown argument \`$1'" >&2
         exit 0
+        ;;
+esac
+
+# System-Services:
+# put in full unit-name. for example "mkbackup@hourly.service"
+SERVICES=" adblock-hostupdate.service apt-daily.service fetchnews.timer iptables.service iptables@blacklist.service rkhunter-check.service rkhunter-update.service youtube-dl-update.service"
+
+case "$1" in
+    purge)
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge $SERVICES >/dev/null
+		deb-systemd-helper unmask $SERVICES >/dev/null
+	fi
+        ;;
+    abort-upgrade)
+        ;;
+    remove)
+        if [ -x "/usr/bin/deb-systemd-helper" ]; then
+                deb-systemd-helper mask $SERVICES >/dev/null
+        fi
+        ;;
+    upgrade|failed-upgrade|abort-install|disappear)
+        ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 0
+        ;;
 
 esac

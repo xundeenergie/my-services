@@ -1,8 +1,0 @@
-[Unit]
-Description=Create home for Guest-Session
-
-[Service]
-Type=oneshot
-ExecStartPre=-/bin/rm -rf /home/gast
-ExecStartPre=/bin/cp -r /etc/skel /home/gast
-ExecStart=/bin/chown -R gast:gast /home/gast
