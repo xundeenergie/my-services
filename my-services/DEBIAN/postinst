@@ -73,6 +73,7 @@ SERVICES="
 adblock-hostupdate.service
 apt-daily.service
 fetchnews.timer
+fetchmail.target
 iptables.service
 iptables@blacklist.service
 rkhunter-check.service
