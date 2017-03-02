@@ -58,6 +58,9 @@ case "$1" in
                 ln -sf "/dev/null" "/etc/systemd/user/${TARGET}/${SERVICE}"
             done
         done
+        for i in hplip-systray.desktop at-spi-dbus-bus.desktop zeitgeist-datahub.desktop; do
+            [ -e "/etc/xdg/${i}.orig" ] && mv "/etc/xdg/${i}.orig" "/etc/xdg/autostart/${i}" 
+        done
         ;;
 
     *)
