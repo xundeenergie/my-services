@@ -1,0 +1,9 @@
+[Unit]
+Description=HPLIP systemtray	
+
+[Service]
+ExecStart=/usr/bin/hp-systray -x
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
