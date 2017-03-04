@@ -1,8 +1,0 @@
-[Unit]
-Description=Zeitgeist full-text search indexer
-
-[Service]
-Type=dbus
-#Type=forking
-BusName=org.gnome.zeitgeist.datahub
-ExecStart=/usr/bin/zeitgeist-datahub
