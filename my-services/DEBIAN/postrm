@@ -80,7 +80,8 @@ iptables.service
 iptables@blacklist.service
 rkhunter-check.service
 rkhunter-update.service
-youtube-dl-update.service"
+youtube-dl-update.service
+bogotrainer@daily.service"
 
 case "$1" in
     purge)

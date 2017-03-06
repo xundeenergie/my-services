@@ -1,0 +1,15 @@
+[Unit]
+Description=Run bogotrainer to learn SPAM-Mails
+ConditionACPower=true
+ConditionPathExists=/usr/bin/bogotrainer
+OnFailure=status-email-root@%n.service
+
+[Service]
+User=Debian-exim
+IOSchedulingClass=2
+IOSchedulingPriority=5
+ExecStart=/usr/bin/bogotrainer -i %i -m -q -v
+
+[Install]
+WantedBy=timer-%i.target
+

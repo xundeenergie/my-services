@@ -1,0 +1,167 @@
+#!/bin/bash
+
+. /usr/local/bin/functions-jakob
+
+ham=1
+spam=1
+VERBOUS=0
+TEST=1
+ha=0	#Anzahl Ham-Mails
+sa=0	#Anzahl Spam-Mails
+MAIL=0	#Versenden eines Mails an root
+MAILDIR=/var/spool/dovecot/mails/
+USERS=$(find $MAILDIR -maxdepth 1 -mindepth 1 -type d|while read i;do basename $i;done)
+LOGFILE=/var/log/bogotrainer.log
+quiet=false
+DRY=false
+vlevel=0
+
+help () {
+echo "Usage: bogotrainer [-H] [-S] [-a <Anzahl>] [-d <dir>]" 
+echo " -h		Anzeige dieser Hilfe"
+echo " -H     		Deaktivierung der HAM-Trainingsfunktion"
+echo " -S      		Deaktivierung der SPAM-Trainingsfunktion"
+echo " -t <T>  		T ist die Anzahl an Tagen, die Ham alt sein darf, um damit bogofilter zu trainieren"
+echo " -s <T>  		T ist die Anzahl an Tagen, die Spam alt sein darf, um damit bogofilter zu trainieren"
+echo " -d <dir>		Maildirectory angeben von dem aus gestartet wird (defaults to $MAILDIR)"
+echo " -v		Verbous-Mode. Anzeige aller Gefundenen Mails"
+echo " -q		Keine Ausgabe"
+echo " -x		Execute - Tatsächliches Ausführen der Registrierung"
+echo " -m		Mail an root"
+echo " -u <USER1,USER2>	Kommagetrente Liste aller User, deren Bogofilter trainiert werden soll"
+echo " --dry-run	Macht einen \"trockenen Lauf\". Es wird nur gezeigt, was getan werden würde"
+echo " -i <daily|weekly>	Intervall für das die Mails geprüft werden"
+}
+
+CMDL=$@
+set -- $(getopt -u -o HShi:t:s:d:mqu:vx --long dry-run -- "$@" )
+
+#test $# -eq 0 && help; exit 1;
+
+while [ $# -gt 0 ]
+do
+	case $1 in
+		-H)ham=0;shift;;
+		-S)spam=0;shift;;
+		-h)help; exit 0; shift;;
+		-i)shift; case $1 in
+		     daily)
+		       HTIME=1; STIME=1
+		       ;;
+		      weekly)
+		       HTIME=8; STIME=8
+		       ;;
+		      *)
+		        exit 1
+			;;
+		    esac
+		    shift
+		    ;;
+		-t)shift; HTIME=$1;shift;;
+		-s)shift; STIME=$1;shift;;
+		-d)shift; MAILDIR="$1";shift;;
+		-q)quiet=true;shift;;
+		-u)shift;USERS="${USERS} $1";shift;;
+		-v)let "vlevel=vlevel+1";shift;;
+		-x)TEST=0;shift;;
+		-m)MAIL=1;shift;;
+		--dry-run)DRY=true;shift;;
+		--)shift;break;;
+		*)help; exit 1; break;;
+	esac
+done
+
+register_ham () {
+  if [ -e "$1" ]; then
+    Debug 1 "Registering $1 as HAM.">&2;
+    #Run su -s /bin/sh -c \""${BOGO} ${BOPTS} -n -B ${1}"\" ${MAILUSER} ;
+    Run ${BOGO} "${BOPTS}" "-n -B ${1}" ;
+    err=$((err + $?))
+    #sudo -u ${AMAVUSER} ${SA} --ham ${SOPTS} < $1 > /dev/null;
+    #cmd="${SA} --ham ${SOPTS}"
+    #su -c "${cmd}" ${AMAVUSER} < $1 > /dev/null;
+    #err=$((err + $?))
+  fi
+  return $err
+}
+
+register_spam () {
+  if [ -e "$1" ]; then
+    Debug 1 "Registering $1 as SPAM.">&2;
+    Run ${BOGO} "${BOPTS}" "-s -B ${1}"
+    #err=$((err + $?))
+  fi
+  #return $err
+  #return
+}
+    
+
+Debug 1 vlevel: $vlevel
+Debug 1 USERS: $USERS
+for user in ${USERS}; do
+    #test $MAILDIR || MAILDIR=/var/spool/dovecot/mails/$user
+    MAILDIR=${MAILDIR}/$user
+    
+    BOGO=/usr/bin/bogofilter
+    SA=/usr/bin/sa-learn
+    BOPTS="-v -d /var/spool/exim4/bogofilter/"
+    SOPTS=""
+    test $HTIME || HTIME=10
+    test $STIME || STIME=30
+    MAILUSER="Debian-exim"
+    AMAVUSER="amavis"
+    err=0
+    
+    [ -x "$BOGO" ] || BOGO="/bin/true"
+    [ -x "$SA" ]   || SA="/bin/true"
+    
+    if [ $ham -eq 1 ]
+    then
+    	ha=0
+    	for m in $(find "${MAILDIR}" -type f -mtime -$HTIME|grep -iv 'cyrus\.[ich]\|spam\|junk\|test\|virus\|trash\|sent\|drafts\|archiv\|papierkorb\|[.]*dovecot[.-][uikml]\|maildirfolder\|subscriptions')
+    	do
+    		let "ha=ha+1"
+    		Debug 1 "HAM - $m"
+    		#test $TEST -eq 0 && register_ham ${m};
+    		Run register_ham "${m}"
+    		#err=$((err + $?))
+    		Debug 2 "ERR-HAM: $err"
+    	done 
+    else
+    	echo "Hamauswertung abgeschaltet"
+    fi
+    
+    
+    if [ $spam -eq 1 ]
+    then
+    	sa=0
+    	for m in $(find "${MAILDIR}" -type f -mtime -$STIME|grep -i 'spam\|junk'|grep -v 'cyrus\.[ich]\|dovecot[.-][uikml]\|maildirfolder')
+    	do 
+    		let "sa=sa+1"
+    		#sa=`expr $sa + 1`
+    		Debug 1 "SPAM - $m"
+    		Run register_spam "${m}";
+    		err=$((err + $?))
+    		Debug 2 "ERR-SPAM: $err"
+    	done
+    else
+    	echo "Spamauswertung abgeschaltet"
+    fi
+    
+#    test $ha -gt 0 && echo "Registrierte Ham-Mails: $ha"
+#    test $sa -gt 0 && echo "Registrierte Spam-Mails: $sa"
+    
+    if test $MAIL -gt 0 
+    then
+        cat <<EOF |mail -s "Running bogotrainer" root	
+    
+    bogofilter mit $0 $CMDL ausgeführt am $(date)
+        
+    Registrierte Ham-Mails: $ha
+    Registrierte Spam-Mails: $sa
+EOF
+
+    fi
+    
+done
+exit $err

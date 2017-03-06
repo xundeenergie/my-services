@@ -81,7 +81,8 @@ iptables.service
 iptables@blacklist.service
 rkhunter-check.service
 rkhunter-update.service
-youtube-dl-update.service"
+youtube-dl-update.service
+bogotrainer@daily.service"
 
 for SERVICE in $SERVICES; do
     # This will only remove masks created by d-s-h on package removal.
