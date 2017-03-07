@@ -1,0 +1,26 @@
+[Unit]
+Description=Virtualbox for user %i
+
+[Service]
+RemainAfterExit=true
+
+Environment=SHUTDOWN=poweroff
+#Environment=SHUTDOWN=acpibutton
+#Environment=SHUTDOWN=savestate
+
+ExecStartPre=/sbin/modprobe vboxdrv
+ExecStartPre=/sbin/modprobe vboxnetflt
+ExecStartPre=/sbin/modprobe vboxnetadp
+ExecStartPre=/sbin/modprobe vboxpci
+
+ExecStart=/bin/true
+
+ExecStop=/var/lib/systemd/scripts/stop_vms %i $SHUTDOWN
+
+ExecStopPost=/sbin/modprobe -r vboxpci
+ExecStopPost=/sbin/modprobe -r vboxnetadp
+ExecStopPost=/sbin/modprobe -r vboxnetflt
+ExecStopPost=/sbin/modprobe -r vboxdrv
+
+[Install]
+WantedBy=multi-user.target

@@ -8,4 +8,4 @@ Wants=iptables.service
 Type=oneshot
 WorkingDirectory=/etc/
 ExecStartPre=/usr/bin/nm-updatecheck.py -G -c
-ExecStart=/etc/systemd/system/scripts/update-blacklist.sh
+ExecStart=/usr/lib/systemd/scripts/update-blacklist.sh
