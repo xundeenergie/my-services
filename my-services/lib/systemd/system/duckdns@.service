@@ -1,0 +1,11 @@
+[Unit]
+Description=Update dynamic DNS duckdns.org for %i.duckdns.org
+Documentation=https://www.duckdns.org/install.jsp#linux-cron
+ConditionPathExists=/etc/duckdns.conf.d/%i.conf
+BindsTo=network-online.target
+After=network-online.target
+
+[Service]
+EnvironmentFile=/etc/duckdns.conf.d/%i.conf
+ExecStart=/usr/bin/curl -k "https://www.duckdns.org/update?domains="%i"&token="${TOKEN}"&ip="
+
