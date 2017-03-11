@@ -4,7 +4,7 @@ OnFailure=NetworkManager.service
 PartOf=network-online.target
 
 [Service]
-ExecStart=/lib/systemd/scripts/network-check.sh
+ExecStart=/usr/lib/systemd/scripts/network-check.sh
 
 [Install]
 WantedBy=network-check.target
