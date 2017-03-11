@@ -1,0 +1,11 @@
+[Unit]
+Description=Runs network-check every minute
+#PartOf=network-online.target
+
+[Timer]
+OnCalendar=*:0/1
+
+[Install]
+#WantedBy=network-online.target
+WantedBy=timers.target
+

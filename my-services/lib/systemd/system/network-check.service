@@ -1,0 +1,10 @@
+[Unit]
+Description=check network-connection and restart NetworkManager.service, when connection is bad
+OnFailure=NetworkManager.service
+PartOf=network-online.target
+
+[Service]
+ExecStart=/lib/systemd/scripts/network-check.sh
+
+[Install]
+WantedBy=network-check.target

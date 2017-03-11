@@ -1,0 +1,8 @@
+[Unit]
+Description=check if network-connection is working
+After=network.target network-online.target
+PartOf=network-online.target
+StopWhenUnneeded=yes
+
+[Install]
+WantedBy=network-online.target
