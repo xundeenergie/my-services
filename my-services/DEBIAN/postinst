@@ -53,9 +53,9 @@ case "$1" in
                 done
             fi
         done
-        for i in hplip-systray.desktop at-spi-dbus-bus.desktop zeitgeist-datahub.desktop; do
-            [ -e "/etc/xdg/autostart/${i}" ] && mv "/etc/xdg/autostart/${i}" "/etc/xdg/${i}.orig"
-        done
+        #for i in hplip-systray.desktop at-spi-dbus-bus.desktop zeitgeist-datahub.desktop; do
+        #    [ -e "/etc/xdg/autostart/${i}" ] && mv "/etc/xdg/autostart/${i}" "/etc/xdg/${i}.orig"
+        #done
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
