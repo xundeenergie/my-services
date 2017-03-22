@@ -116,15 +116,21 @@ sub is_purge {
 
 sub find_unit {
     my ($scriptname) = @_;
-
     my $service_path = $scriptname;
-    $scriptname =~ s/\@.*\.([a-z]*)$/@.$1/;
+    $scriptname =~ s/\@(.*)\.([a-z]*)$/@.$2/;
     if (-f "/etc/systemd/system/$scriptname") {
         $service_path = "/etc/systemd/system/$scriptname";
     } elsif (-f "/lib/systemd/system/$scriptname") {
         $service_path = "/lib/systemd/system/$scriptname";
     }
+    #print STDERR "$0: '$service_path': '$scriptname' \n";
     return $service_path;
+}
+
+sub get_instance {
+    my ($instance) = @_;
+    $instance =~ s/^.*\@(.*)\.([a-z]*)$/$1/;
+    return $instance;
 }
 
 sub dsh_state_path {
@@ -183,6 +189,7 @@ sub get_link_closure {
     my @links;
 
     my $unit_name = basename($service_path);
+    my $instance = get_instance($scriptname);
 
     # The keys parsed from the unit file below can only have unit names
     # as values. Since unit names can't have whitespace in systemd,
@@ -199,6 +206,7 @@ sub get_link_closure {
                 my $wants_dir = "/etc/systemd/system/$value";
                 $wants_dir .= '.wants' if $1 eq 'WantedBy';
                 $wants_dir .= '.requires' if $1 eq 'RequiredBy';
+                $wants_dir =~ s/\%i/$instance/;
                 push @links, { dest => $service_path, src => "$wants_dir/$scriptname" };
             }
         }
@@ -207,6 +215,7 @@ sub get_link_closure {
             for my $value (split(/\s+/, $1)) {
                 $value =~ s/^(["'])(.*)\g1$/$2/;
                 if ($value ne $unit_name) {
+                    $value =~ s/\%i/$instance/;
                     push @links, get_link_closure($value, find_unit($value));
                 }
             }
@@ -216,6 +225,7 @@ sub get_link_closure {
             for my $value (split(/\s+/, $1)) {
                 $value =~ s/^(["'])(.*)\g1$/$2/;
                 if ($value ne $unit_name) {
+                    $value =~ s/\%i/$instance/;
                     push @links, { dest => $service_path, src => "/etc/systemd/system/$1" };
                 }
             }
@@ -281,6 +291,7 @@ sub make_systemd_links {
 
         my $statefile = $service_link;
         $statefile =~ s,^/etc/systemd/system/,$enabled_state_dir/,;
+        #print STDERR "$0: make_systemd_links: $statefile \n";
         next if -e $statefile;
 
         if ($opts{'create_links'} && ! -l $service_link) {
@@ -498,8 +509,8 @@ if (!defined($action)) {
 }
 
 if (!$ENV{DPKG_MAINTSCRIPT_PACKAGE}) {
-    print STDERR "$0 was not called from dpkg. Exiting.\n";
-    exit 1;
+    #print STDERR "$0 was not called from dpkg. Exiting.\n";
+    #exit 1;
 }
 
 if ($action eq 'purge') {
@@ -510,6 +521,7 @@ if ($action eq 'purge') {
 debug "is purge = " . (is_purge() ? "yes" : "no");
 
 my $rc = 0;
+#print STDERR $action.".\n";
 if ($action eq 'is-enabled' ||
     $action eq 'was-enabled' ||
     $action eq 'debian-installed') {

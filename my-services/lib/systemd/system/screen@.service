@@ -5,8 +5,10 @@ After=network.target
 [Service]
 Type=simple
 User=%i
-ExecStart=/usr/bin/screen -DmS autoscreen
-ExecStop=/usr/bin/screen -S autoscreen -X quit
+ExecStart=/usr/bin/screen -DmS autoscreen_%i
+ExecStop=/usr/bin/screen -S autoscreen_%i -X quit
+#Restart=on-success
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
