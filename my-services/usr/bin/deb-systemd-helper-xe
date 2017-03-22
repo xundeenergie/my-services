@@ -123,7 +123,6 @@ sub find_unit {
     } elsif (-f "/lib/systemd/system/$scriptname") {
         $service_path = "/lib/systemd/system/$scriptname";
     }
-    #print STDERR "$0: '$service_path': '$scriptname' \n";
     return $service_path;
 }
 
@@ -225,7 +224,6 @@ sub get_link_closure {
             for my $value (split(/\s+/, $1)) {
                 $value =~ s/^(["'])(.*)\g1$/$2/;
                 if ($value ne $unit_name) {
-                    #$value =~ s/\%i/$instance/;
                     push @links, { dest => $service_path, src => "/etc/systemd/system/$1" };
                 }
             }
@@ -291,7 +289,6 @@ sub make_systemd_links {
 
         my $statefile = $service_link;
         $statefile =~ s,^/etc/systemd/system/,$enabled_state_dir/,;
-        #print STDERR "$0: make_systemd_links: $statefile \n";
         next if -e $statefile;
 
         if ($opts{'create_links'} && ! -l $service_link) {
@@ -521,7 +518,6 @@ if ($action eq 'purge') {
 debug "is purge = " . (is_purge() ? "yes" : "no");
 
 my $rc = 0;
-#print STDERR $action.".\n";
 if ($action eq 'is-enabled' ||
     $action eq 'was-enabled' ||
     $action eq 'debian-installed') {
