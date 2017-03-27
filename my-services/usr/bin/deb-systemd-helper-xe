@@ -286,6 +286,7 @@ sub make_systemd_links {
         my $service_link = $link->{src};
 
         record_in_statefile($dsh_state, $service_link);
+        print STDERR "dshSTATE: $dsh_state \nservice_path: $service_path \nscriptname: $scriptname\nservice_link: $service_link\nservicepath: $service_path\n";
 
         my $statefile = $service_link;
         $statefile =~ s,^/etc/systemd/system/,$enabled_state_dir/,;
@@ -469,7 +470,9 @@ sub mask_service {
 sub unmask_service {
     my ($scriptname, $service_path) = @_;
 
-    my $mask_link = '/etc/systemd/system/' . basename($service_path);
+    #my $mask_link = '/etc/systemd/system/' . basename($service_path);
+    my $mask_link = '/etc/systemd/system/' . basename($scriptname);
+    print STDERR "MASKED LINK: $mask_link $scriptname $service_path\n";
 
     # Not masked? Nothing to do.
     return unless -e $mask_link;
