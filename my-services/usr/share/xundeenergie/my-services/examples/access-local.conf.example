@@ -1,0 +1,6 @@
+#example - put this in /etc/security/ to wort with the example in /etc/pam.d/sshd for two-factor-authentication only from remote networks
+#
+#only allow from local IP range
++ : ALL : 192.168.0.0/24
++ : ALL : LOCAL
+- : ALL : ALL
