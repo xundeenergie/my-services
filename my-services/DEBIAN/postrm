@@ -85,16 +85,16 @@ bogotrainer@daily.service"
 
 case "$1" in
     purge)
-	if [ -x "/usr/bin/deb-systemd-helper-xe" ]; then
-		deb-systemd-helper-xe purge $SERVICES >/dev/null
-		deb-systemd-helper-xe unmask $SERVICES >/dev/null
+	if [ -x "/usr/bin/deb-systemd-helper-new" ]; then
+		deb-systemd-helper-new purge $SERVICES >/dev/null
+		deb-systemd-helper-new unmask $SERVICES >/dev/null
 	fi
         ;;
     abort-upgrade)
         ;;
     remove)
-        if [ -x "/usr/bin/deb-systemd-helper-xe" ]; then
-                deb-systemd-helper-xe mask $SERVICES >/dev/null
+        if [ -x "/usr/bin/deb-systemd-helper-new" ]; then
+                deb-systemd-helper-new mask $SERVICES >/dev/null
         fi
         ;;
     upgrade|failed-upgrade|abort-install|disappear)
