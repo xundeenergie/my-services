@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=%i
+WorkingDirectory=~
 ExecStart=/usr/bin/screen -DmS autoscreen_%i
 ExecStop=/usr/bin/screen -S autoscreen_%i -X quit
 #Restart=on-success
