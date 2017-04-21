@@ -516,7 +516,7 @@ if (!defined($action)) {
 
 if (!$ENV{DPKG_MAINTSCRIPT_PACKAGE}) {
     print STDERR "$0 was not called from dpkg. Exiting.\n";
-    exit 1;
+    #exit 1;
 }
 
 if ($action eq 'purge') {
