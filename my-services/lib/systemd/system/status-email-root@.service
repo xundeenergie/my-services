@@ -4,6 +4,6 @@ Description=status email for %i to root
 
 [Service]
 Type=simple
-ExecStart=/var/lib/systemd/scripts/systemd-email root@localhost %i
+ExecStart=/usr/lib/systemd/scripts/systemd-email root@localhost %i
 #User=nobody
 Group=systemd-journal
