@@ -7,6 +7,12 @@ OnFailure=status-email-root@%n.service
 [Service]
 Type=forking
 User=%I
+
+Nice=10
+IOSchedulingClass=3
+#IOSchedulingPriority=
+CPUSchedulingPolicy=idle
+
 #ExecStartPre=/bin/sh -c "(/bin/systemctl is-active update.target)"
 #ExecStartPre=/usr/bin/nm-updatecheck.py -G -c
 ExecStart=/usr/bin/dropbox start 
