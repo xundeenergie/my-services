@@ -1,0 +1,9 @@
+[Unit]
+Description=Start minissdpd uPNP-Service
+Conflicts=shutdown.target suspend.target
+
+[Service]
+ExecStart=/usr/sbin/minissdpd -i 0.0.0.0
+
+[Install]
+WantedBy=multi-user.target

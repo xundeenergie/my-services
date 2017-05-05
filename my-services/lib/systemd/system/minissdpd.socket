@@ -1,0 +1,8 @@
+[Unit]
+Description=minissdpd socket
+
+[Socket]
+ListenStream=/var/run/minissdpd.sock
+
+[Install]
+WantedBy=sockets.target

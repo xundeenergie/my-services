@@ -1,0 +1,9 @@
+[Unit]
+Description=minidlna DLNA-Servers
+PartOf=network-online.target
+
+#StopWhenUnneeded=yes
+
+[Install]
+WantedBy=network-online.target
+
