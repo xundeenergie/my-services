@@ -10,6 +10,7 @@ User=minidlna
 Group=minidlna
 RuntimeDirectory=minidlna%i
 ExecStart=/usr/sbin/minidlnad -S -f /etc/minidlna%i.conf -P %t/minidlna%i/minidlna.pid
+Restart=always
 
 [Install]
 WantedBy=minidlna.target
