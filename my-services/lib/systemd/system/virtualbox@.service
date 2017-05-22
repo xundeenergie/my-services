@@ -1,26 +1,19 @@
 [Unit]
 Description=Virtualbox for user %i
+Requires=virtualbox-load-modules.service
+After=virtualbox-load-modules.service
+BindsTo=virtualbox.target
 
 [Service]
 RemainAfterExit=true
+Type=oneshot
 
 Environment=SHUTDOWN=poweroff
 #Environment=SHUTDOWN=acpibutton
 #Environment=SHUTDOWN=savestate
 
-ExecStartPre=/sbin/modprobe vboxdrv
-ExecStartPre=/sbin/modprobe vboxnetflt
-ExecStartPre=/sbin/modprobe vboxnetadp
-ExecStartPre=/sbin/modprobe vboxpci
-
 ExecStart=/bin/true
-
-ExecStop=/var/lib/systemd/scripts/stop_vms %i $SHUTDOWN
-
-ExecStopPost=/sbin/modprobe -r vboxpci
-ExecStopPost=/sbin/modprobe -r vboxnetadp
-ExecStopPost=/sbin/modprobe -r vboxnetflt
-ExecStopPost=/sbin/modprobe -r vboxdrv
+ExecStop=/usr/lib/systemd/scripts/stop_vms %i $SHUTDOWN
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=virtualbox.target

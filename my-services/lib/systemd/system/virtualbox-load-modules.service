@@ -1,0 +1,19 @@
+[Unit]
+Description=loading modules vboxdrv, vboxnetflt, vboxnetadp and vboxpci
+BindsTo=virtualbox.target
+
+[Service]
+RemainAfterExit=true
+
+ExecStartPre=/sbin/modprobe vboxdrv
+ExecStartPre=/sbin/modprobe vboxnetflt
+ExecStartPre=/sbin/modprobe vboxnetadp
+ExecStartPre=/sbin/modprobe vboxpci
+
+ExecStart=/bin/true
+ExecStop=/bin/true
+
+ExecStopPost=/sbin/modprobe -r vboxpci
+ExecStopPost=/sbin/modprobe -r vboxnetadp
+ExecStopPost=/sbin/modprobe -r vboxnetflt
+ExecStopPost=/sbin/modprobe -r vboxdrv
