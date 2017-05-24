@@ -8,6 +8,7 @@ if [ -d /tmp/.vbox-$1-ipc ]; then
         for v in $VMS; do
             VBoxManage --nologo controlvm $v $2
             wait=10
+            sleep $wait
         done
     fi
 fi
