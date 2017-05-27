@@ -7,8 +7,7 @@ if [ -d /tmp/.vbox-$1-ipc ]; then
         VMS=`echo "$VMS" | sed -e 's/^".*".*{\(.*\)}/\1/'`
         for v in $VMS; do
             VBoxManage --nologo controlvm $v $2
-            wait=10
-            sleep $wait
+            sleep $3
         done
     fi
 fi

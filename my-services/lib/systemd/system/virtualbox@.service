@@ -8,12 +8,12 @@ BindsTo=virtualbox.target
 RemainAfterExit=true
 Type=oneshot
 
-Environment=SHUTDOWN=poweroff
-#Environment=SHUTDOWN=acpibutton
-#Environment=SHUTDOWN=savestate
+Environment=SHUTDOWN=poweroff TIMEOUT=10
+#Environment=SHUTDOWN=acpibutton TIMEOUT=30
+#Environment=SHUTDOWN=savestate TIMEOUT=30
 
 ExecStart=/bin/true
-ExecStop=/usr/lib/systemd/scripts/stop_vms %i $SHUTDOWN
+ExecStop=/usr/lib/systemd/scripts/stop_vms %i $SHUTDOWN $TIMEOUT
 
 [Install]
 WantedBy=virtualbox.target
