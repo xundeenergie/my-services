@@ -1,6 +1,7 @@
 [Unit]
 Description=loading modules vboxdrv, vboxnetflt, vboxnetadp and vboxpci
 BindsTo=virtualbox.target
+Before=virtualbox.target
 
 [Service]
 RemainAfterExit=true
