@@ -1,5 +1,5 @@
 [Unit]
-Description=Mediaserver minidlna: %i %t
+Description=Mediaserver minidlna: %i
 After=network-online.target
 ConditionPathExists=/etc/minidlna%i.conf
 PartOf=minidlna.target
