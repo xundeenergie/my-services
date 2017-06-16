@@ -1,10 +1,10 @@
 #!/bin/bash
-IP_BLACKLIST_DIR=/etc/ipset-blacklist
 IPSET_BLACKLIST_NAME=blacklist # change it if it collides with a pre-existing ipset list
+IP_BLACKLIST_DIR=/etc/ipset-${IPSET_BLACKLIST_NAME}
 IPSET_TMP_BLACKLIST_NAME=${IPSET_BLACKLIST_NAME}-tmp
-IP_BLACKLIST_RESTORE=${IP_BLACKLIST_DIR}/ip-blacklist.restore
-IP_BLACKLIST=${IP_BLACKLIST_DIR}/ip-blacklist.list
-IP_BLACKLIST_CUSTOM=${IP_BLACKLIST_DIR}/ip-blacklist-custom.list # optional, for your personal nemeses (no typo, plural)
+IP_BLACKLIST_RESTORE=${IP_BLACKLIST_DIR}/ip-${IPSET_BLACKLIST_NAME}.restore
+IP_BLACKLIST=${IP_BLACKLIST_DIR}/ip-${IPSET_BLACKLIST_NAME}.list
+IP_BLACKLIST_CUSTOM=${IP_BLACKLIST_DIR}/ip-${IPSET_BLACKLIST_NAME}-custom.list # optional, for your personal nemeses (no typo, plural)
 HASHSIZE=65536 # the initial hash size for the set. Don't touch unless you know what you're doing.
 #MAXELEM=65536 # the maximal number of elements which can be stored in the set
 MAXELEM=100000 # the maximal number of elements which can be stored in the set
