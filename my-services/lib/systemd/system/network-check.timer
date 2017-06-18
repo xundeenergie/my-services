@@ -8,4 +8,4 @@ OnCalendar=*:0/1
 [Install]
 #WantedBy=network-online.target
 WantedBy=timers.target
-
+#WantedBy=network-connected.target
