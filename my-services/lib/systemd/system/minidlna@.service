@@ -1,16 +1,16 @@
 [Unit]
 Description=Mediaserver minidlna: %i
-After=network-online.target
-ConditionPathExists=/etc/minidlna%i.conf
+ConditionPathExists=/etc/minidlna.d/%i.conf
 PartOf=minidlna.target
 ReloadPropagatedFrom=minidlna.target
 
 [Service]
 User=minidlna
 Group=minidlna
-RuntimeDirectory=minidlna%i
-ExecStart=/usr/sbin/minidlnad -S -f /etc/minidlna%i.conf -P %t/minidlna%i/minidlna.pid
+RuntimeDirectory=minidlna-%i
+ExecStart=/usr/sbin/minidlnad -S -f /etc/minidlna.d/%i.conf -P %t/minidlna-%i/minidlna-%i.pid
 Restart=always
+KillMode=mixed
 
 [Install]
 WantedBy=minidlna.target
