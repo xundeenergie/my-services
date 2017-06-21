@@ -7,3 +7,4 @@ StopWhenUnneeded=yes
 [Install]
 #WantedBy=network-online.target
 WantedBy=timer-online.target
+#WantedBy=multi-user.target
