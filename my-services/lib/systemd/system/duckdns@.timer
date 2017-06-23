@@ -1,12 +1,12 @@
 [Unit]
 Description=Timer to update dynamic DNS duckdns.org for %i.duckdns.org
 Documentation=https://www.duckdns.org/install.jsp#linux-cron
-PartOf=network-online.target
+PartOf=connection-online.target
 
 [Timer]
 OnCalendar=*:0/5:0
 Unit=duckdns@%i.service
 
 [Install]
-WantedBy=network-online.target
+WantedBy=connection-online.target
 

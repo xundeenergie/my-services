@@ -1,10 +1,11 @@
 [Unit]
 Description=Dropbox-target
-After=network-online.target
-PartOf=network-online.target
+After=connection-online.target
+PartOf=connection-online.target
 StopWhenUnneeded=yes
 
 [Install]
 #WantedBy=network-online.target
-WantedBy=timer-online.target
 #WantedBy=multi-user.target
+#WantedBy=timer-online.target
+WantedBy=connection-online.target
