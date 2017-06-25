@@ -1,0 +1,11 @@
+[Unit]
+# It needs a Install-Section to a cron-job.
+Description=Compile sa-rules
+
+[Service]
+ExecStartPre=/usr/bin/spamassassin --lint
+ExecStart=/usr/bin/sa-compile
+ExecStopPost=/bin/touch /var/lib/spamassassin/compiled/.compiled
+
+[Install]
+WantedBy=timer-daily.target

@@ -1,0 +1,4 @@
+[Unit]
+
+[Path]
+PathChanged=/var/lib/spamassassin/compiled/.compiled

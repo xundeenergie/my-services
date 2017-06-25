@@ -1,0 +1,6 @@
+[Unit]
+Description=Update all keys vor spamassassin
+
+
+[Service]
+ExecStart=/bin/systemctl reload spamassassin.service

@@ -82,7 +82,10 @@ iptables@blacklist.service
 rkhunter-check.service
 rkhunter-update.service
 youtube-dl-update.service
-bogotrainer@daily.service"
+bogotrainer@daily.service
+sa-update-keys@.service
+sa-update-keys@spamassassin.heinlein-support.de.service
+sa-compile.service"
 
 for SERVICE in $SERVICES; do
     # This will only remove masks created by d-s-h on package removal.

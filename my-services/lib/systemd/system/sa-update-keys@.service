@@ -1,0 +1,22 @@
+[Unit]
+# Diese Unit ist nur zu Probezwecken statt /etc/con.daily/spamassassin, funktioniert aber nocht nicht korrekt
+Description=Update spamassassin-keys from channel %i
+ConditionPathExists=/usr/bin/sa-update
+Before=sa-compile.service
+Requires=server-wait-online@%i.service
+After=server-wait-online@%i.service
+
+[Service]
+Type=oneshot
+User=debian-spamd
+Group=debian-spamd
+Environment=LANG=C
+#Environment="OPTIONS=-v --nogpg"
+Environment="OPTIONS=-v --gpghomedir /var/lib/spamassassin/sa-update-keys"
+ExecStartPre=/bin/sh -c 'command -v gpg > /dev/null'
+#ExecStartPre=-/usr/bin/sa-update -v --gpghomedir /var/lib/spamassassin/sa-update-keys
+ExecStart=-/usr/bin/sa-update $OPTIONS --channel %i
+
+[Install]
+WantedBy=sa-compile.service
+DefaultInstance=updates.spamassassin.org
