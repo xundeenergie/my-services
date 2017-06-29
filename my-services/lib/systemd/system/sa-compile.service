@@ -1,6 +1,8 @@
 [Unit]
 # It needs a Install-Section to a cron-job.
 Description=Compile sa-rules
+Requisite=connection-online.target
+After=connection-online.target
 
 [Service]
 ExecStartPre=/usr/bin/spamassassin --lint

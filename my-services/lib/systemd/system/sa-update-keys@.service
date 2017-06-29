@@ -3,8 +3,10 @@
 Description=Update spamassassin-keys from channel %i
 ConditionPathExists=/usr/bin/sa-update
 Before=sa-compile.service
-Requires=server-wait-online@%i.service
-After=server-wait-online@%i.service
+Requisite=connection-online.target
+After=connection-online.target
+#Requires=server-wait-online@%i.service
+#After=server-wait-online@%i.service
 
 [Service]
 Type=oneshot
