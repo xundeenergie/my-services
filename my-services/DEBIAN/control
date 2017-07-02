@@ -1,12 +1,13 @@
 Package: my-services
-Version: 0.1.93
+Version: 0.1.94
 Section: misc
 Priority: extra
 Architecture: all
 Maintainer: Jakobus Schürz <xundeenergie@gmail.com>
 Homepage: http://github.com/xundeenergie/my-services
 Provides: my-services
-Depends: ipset, youtube-dl, systemd, curl, wget, network-manager-customsettings, rkhunter, screen
+Depends: ipset, systemd, curl, wget, network-manager-customsettings, rkhunter, screen, deb-systemd-helper-new
 Recommends: hplip, hplip-gui, zeitgeist-datahub, bogofilter, spamassassin, minidlna, minissdpd
+Suggests: youtube-dl
 Description: My services
  Special configurations for this and that around in linux, for jakob schürz
