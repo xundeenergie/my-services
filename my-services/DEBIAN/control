@@ -1,9 +1,9 @@
 Package: my-services
-Version: 0.1.94
+Version: 0.1.95
 Section: misc
 Priority: extra
 Architecture: all
-Maintainer: Jakobus Schürz <xundeenergie@gmail.com>
+Maintainer: Jakobus Schürz <jakob@schuerz.at>
 Homepage: http://github.com/xundeenergie/my-services
 Provides: my-services
 Depends: ipset, systemd, curl, wget, network-manager-customsettings, rkhunter, screen, deb-systemd-helper-new
