@@ -103,6 +103,7 @@ for SERVICE in $SERVICES; do
     fi
 done
 
+test -e /var/lib/gdm3/.config/systemd/user && chown Debian-gdm:Debian-gdm /var/lib/gdm3/.config/systemd/user -R
 
 #db_stop
 
