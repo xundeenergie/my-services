@@ -4,6 +4,7 @@ Description=dropbox for user %I
 Requisite=dropbox.target
 PartOf=dropbox.target
 Before=dropbox.target
+After=local-fs.target
 OnFailure=status-email-root@%n.service
 
 [Service]

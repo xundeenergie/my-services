@@ -1,5 +1,6 @@
 [Unit]
 Description=minidlna DLNA-Servers
+BindsTo=connection-online.target
 PartOf=connection-online.target
 
 #StopWhenUnneeded=yes
@@ -7,5 +8,5 @@ PartOf=connection-online.target
 [Install]
 #WantedBy=network-online.target
 #WantedBy=timer-online.target
-WantedBy=multi-user.target
+WantedBy=multi-user.target connection-online.target
 

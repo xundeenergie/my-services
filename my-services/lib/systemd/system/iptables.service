@@ -7,9 +7,10 @@ After=systemd-sysctl.service
 
 [Service]
 #Type=oneshot
-ExecStart=/sbin/iptables-restore /etc/iptables.firewall.rules
-ExecReload=/sbin/iptables-restore /etc/iptables.firewall.rules
-ExecStop=/sbin/iptables -F
+ExecStart=/sbin/iptables-restore /etc/iptables.simplefirewall.rules
+ExecReload=/sbin/iptables-restore /etc/iptables.simplefirewall.rules
+ExecStop=/sbin/iptables-restore /etc/iptables.nofirewall.rules
+ExecStopPost=/sbin/iptables -F
 RemainAfterExit=yes
 
 [Install]
