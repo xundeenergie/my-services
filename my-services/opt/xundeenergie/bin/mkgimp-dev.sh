@@ -53,7 +53,7 @@ set_global_variables() {
     # Most recent required dependencies:
     # for Debian jessie based distros
     # required_dependencies=( git scons libgtk2.0-bin libgexiv2-dev libjson-glib-dev libjson-c-dev)
-    required_dependencies=( git libgtk2.0-bin libgexiv2-dev libjson-glib-dev libjson-c-dev python-cairo-dev libgtk2.0-dev libbz2-dev python-dev python-gtk2-dev libbz2-dev librsvg2-dev)
+    required_dependencies=( git libgtk2.0-bin libgexiv2-dev libjson-glib-dev libjson-c-dev python-cairo-dev libgtk2.0-dev libbz2-dev python-dev python-gtk2-dev libbz2-dev librsvg2-dev libtool autoconf intltool )
     # for Debian sid based distros
     # required_dependencies=( git scons libgtk2.0-bin libgexiv2-dev libjson-c-dev)
     optional_dependencies=( gegl libraw-dev graphviz-dev libaa1-dev asciiart libasound2-dev libgs-dev libwebkitgtk-dev libmng-dev libopenexr-dev libwebp-dev libpoppler-glib-dev libwmf-dev libxpm-dev)
