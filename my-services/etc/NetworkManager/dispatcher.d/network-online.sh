@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "CMDLINE 1 $1 2 $2"
+#echo "CMDLINE 1 $1 2 $2"
 
 #UNITS="network-online.target connection-online.target"
 UNITS="connection-online.target"

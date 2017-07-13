@@ -56,7 +56,7 @@ set_global_variables() {
     required_dependencies=( git libgtk2.0-bin libgexiv2-dev libjson-glib-dev libjson-c-dev python-cairo-dev libgtk2.0-dev libbz2-dev python-dev python-gtk2-dev libbz2-dev librsvg2-dev libtool autoconf intltool gtk-doc-tools xsltproc)
     # for Debian sid based distros
     # required_dependencies=( git scons libgtk2.0-bin libgexiv2-dev libjson-c-dev)
-    optional_dependencies=( gegl libraw-dev graphviz-dev libaa1-dev asciiart libasound2-dev libgs-dev libwebkitgtk-dev libmng-dev libopenexr-dev libwebp-dev libpoppler-glib-dev libwmf-dev libxpm-dev libavcodec-dev)
+    optional_dependencies=( gegl libraw-dev graphviz-dev libaa1-dev asciiart libasound2-dev libgs-dev libwebkitgtk-dev libmng-dev libopenexr-dev libwebp-dev libpoppler-glib-dev libwmf-dev libxpm-dev libavcodec-dev appstream-util xvfb libgudev-1.0.dev)
     gimp_build_directory="$HOME/.gimp-build-dev"
     # Find number of cpu cores, to multi-thread the make
     number_of_jobs="$(($(grep '^processor' /proc/cpuinfo | wc -l)))"
