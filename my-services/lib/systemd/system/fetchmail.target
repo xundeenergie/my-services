@@ -8,5 +8,5 @@ StopWhenUnneeded=yes
 
 [Install]
 #WantedBy=network-online.target
-WantedBy=timer-afterboot.target
-#WantedBy=connection-online.target
+#WantedBy=timer-afterboot.target
+WantedBy=connection-online.target
