@@ -9,5 +9,10 @@ ExecStartPre=/usr/bin/spamassassin --lint
 ExecStart=/usr/bin/sa-compile
 ExecStopPost=/bin/touch /var/lib/spamassassin/compiled/.compiled
 
+Nice=10
+IOSchedulingClass=3
+#IOSchedulingPriority=
+CPUSchedulingPolicy=idle
+
 [Install]
 WantedBy=timer-daily.target
