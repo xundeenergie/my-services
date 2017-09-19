@@ -30,7 +30,7 @@ case "$1" in
                     $1 ~ /WantedBy/ && $1 !~ /^#/{split($2,wants," ")} \
                     $1 ~ /RequiredBy/ && $1 !~ /^#/{split($2,requ," ")} \
                     END{for (w in wants){print wants[w]".wants"};for (r in requ){print requ[r]".requires"}}' "${UNIT_LOC}${UNIT_NAME}");do
-                [ -e "/etc/systemd/user/${SERVICE}" ] || rf -rf "/etc/systemd/user/${SERVICE}"
+                [ -e "/etc/systemd/user/${SERVICE}" ] || rm -rf "/etc/systemd/user/${SERVICE}"
                 [ -e "/etc/systemd/user/${TARGET}/${SERVICE}" ] || rm -rf "/etc/systemd/user/${TARGET}/${SERVICE}"
             done
         done
