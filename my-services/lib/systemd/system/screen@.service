@@ -6,6 +6,8 @@ After=network.target
 Type=simple
 User=%i
 WorkingDirectory=~
+ExecStartPre=-/usr/bin/xdg-user-dirs-update
+#ExecStartPre=/bin/sh -c '/bin/systemctl set-environment XDG_RUNTIME_DIR=%t'
 ExecStart=/usr/bin/screen -DmS autoscreen_%i
 ExecStop=/usr/bin/screen -S autoscreen_%i -X quit
 #Restart=on-success
