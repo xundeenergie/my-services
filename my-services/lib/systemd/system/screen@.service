@@ -5,10 +5,10 @@ After=network.target
 [Service]
 Type=simple
 User=%i
-WorkingDirectory=~
+WorkingDirectory=/home/%i
 ExecStartPre=-/usr/bin/xdg-user-dirs-update
-#ExecStartPre=/bin/sh -c '/bin/systemctl set-environment XDG_RUNTIME_DIR=%t'
 ExecStart=/usr/bin/screen -DmS autoscreen_%i
+#ExecStartPost=/bin/sh -c '/bin/systemctl set-environment --user XDG_RUNTIME_DIR=/run/user/$(/usr/bin/id -u %i)'
 ExecStop=/usr/bin/screen -S autoscreen_%i -X quit
 #Restart=on-success
 Restart=always
