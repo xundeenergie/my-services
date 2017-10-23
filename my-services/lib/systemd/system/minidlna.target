@@ -2,6 +2,7 @@
 Description=minidlna DLNA-Servers
 BindsTo=connection-online.target
 PartOf=connection-online.target
+Conflicts=sleep.target suspend.target
 
 #StopWhenUnneeded=yes
 
