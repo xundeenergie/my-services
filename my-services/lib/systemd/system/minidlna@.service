@@ -3,6 +3,7 @@ Description=Mediaserver minidlna: %i
 ConditionPathExists=/etc/minidlna.d/%i.conf
 PartOf=minidlna.target
 ReloadPropagatedFrom=minidlna.target
+Conflicts=sleep.target suspend.target
 
 [Service]
 User=minidlna
